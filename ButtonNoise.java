@@ -11,7 +11,7 @@ import javax.sound.sampled.SourceDataLine;
  * Created by tilz on 19/02/2017.
  */
 public class ButtonNoise{
-    private final static String FILENAME = "hello.wav";
+    private final static String FILENAME = "C:\\Users\\Spencer\\Desktop\\repos\\Amazon-Echo-ECM2415\\hello.wav";
 
     /*
      * This method sets up the stream for the sound file
@@ -74,6 +74,10 @@ public class ButtonNoise{
      * Main method to play sound.
      */
     public static void main( String[] argv ) {
+        startup();
+    }
+
+    static void startup(){
         AudioInputStream stream = setupStream( FILENAME );
         playStream( stream, readStream( stream ) );
     }
