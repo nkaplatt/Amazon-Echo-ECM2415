@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.*;
 
 /**
  * Created by Rickster on 20/02/2017.
@@ -12,32 +13,28 @@ public class OnOff{
 		frame.setLayout(new GridLayout(2,0));
 		frame.setTitle("Welcome to Amazon Echo!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setSize(500,600);
-		frame.setVisible(true);
+    frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
+
+		//Set up echo image.
+		JPanel panel = new JPanel();
+		ImageIcon echoIcon = new ImageIcon("Echo.png");
+		JLabel echoImage = new JLabel(echoIcon);
+		frame.add(panel);
+		panel.add(echoImage);
 
 		//Set up buttons.
-		JPanel panel = new JPanel();
+		JPanel panel2 = new JPanel();
 		JButton onButton = new JButton("On");
 		JButton offButton = new JButton("Off");
-		frame.add(panel, BorderLayout.NORTH);
-		panel.add(onButton);
-		panel.add(offButton);
+		frame.add(panel2);
+		panel2.add(onButton);
+		panel2.add(offButton);
 		onButton.addActionListener(new OnAction());
 		offButton.addActionListener(new OffAction());
 
-		//Set up echo image.
-		JPanel panel2 = new JPanel();
-		JButton testButton = new JButton("Test");		//Replace test Code
-		frame.add(panel2, BorderLayout.SOUTH);
-		panel2.add(testButton);											//Replace test Code
-
-		//Find a way to add image to panel2
-		/*
-			ImageIcon echoIcon = new ImageIcon("Echo.png");
-			JLabel echoImage = new JLabel(echoIcon);
-			panel2.add(echoImage);
-		*/
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	static class OnAction implements ActionListener{
