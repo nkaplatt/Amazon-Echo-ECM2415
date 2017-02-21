@@ -3,10 +3,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Created by Rickster on 20/02/2017.
+ * Created by Tilz on 20/02/2017.
  */
 public class OnOff{
 	public static void main(String[] args){
+		System.out.println("Faggot");
     //Set up container.
 		JFrame frame = new JFrame("Amazon Echo");
     frame.setTitle("Welcome to Amazon Echo!");
