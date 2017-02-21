@@ -21,7 +21,7 @@ public class Echo extends JFrame{
         /* code for creating bounds for button */
     }
 
-    public static void main(Stringp[] args){
+    public static void main(String[] args){
         JFrame frame = new Echo();
         frame.setLocationRelativeTo(null);
         frame.setSize(173, 412);
