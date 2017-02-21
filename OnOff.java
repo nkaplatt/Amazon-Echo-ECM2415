@@ -9,21 +9,35 @@ public class OnOff{
 	public static void main(String[] args){
 		//Set up container.
 		JFrame frame = new JFrame("Amazon Echo");
+		frame.setLayout(new GridLayout(2,0));
 		frame.setTitle("Welcome to Amazon Echo!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		frame.setSize(500,500);
+		frame.setSize(500,600);
 		frame.setVisible(true);
 
-		//Set up components.
+		//Set up buttons.
 		JPanel panel = new JPanel();
 		JButton onButton = new JButton("On");
 		JButton offButton = new JButton("Off");
-		frame.add(panel);
+		frame.add(panel, BorderLayout.NORTH);
 		panel.add(onButton);
 		panel.add(offButton);
 		onButton.addActionListener(new OnAction());
 		offButton.addActionListener(new OffAction());
+
+		//Set up echo image.
+		JPanel panel2 = new JPanel();
+		JButton testButton = new JButton("Test");		//Replace test Code
+		frame.add(panel2, BorderLayout.SOUTH);
+		panel2.add(testButton);											//Replace test Code
+
+		//Find a way to add image to panel2
+		/*
+			ImageIcon echoIcon = new ImageIcon("Echo.png");
+			JLabel echoImage = new JLabel(echoIcon);
+			panel2.add(echoImage);
+		*/
 	}
 
 	static class OnAction implements ActionListener{
@@ -38,8 +52,6 @@ public class OnOff{
 			frame2.add(panel);
 			panel.add(label);
 			ButtonNoise.main(null);
-
-
 		}
 	}
 
