@@ -11,7 +11,7 @@ import javax.sound.sampled.SourceDataLine;
  * Created by tilz on 19/02/2017.
  */
 public class ButtonNoise{
-    private final static String FILENAME = "hello.wav";
+    private final static String FILENAME = "C:\\Users\\Spencer\\Desktop\\repos\\Amazon-Echo-ECM2415\\Obi-Wan - Hello there.wav";
 
     /*
      * This method sets up the stream for the sound file
@@ -32,7 +32,7 @@ public class ButtonNoise{
     static ByteArrayOutputStream readStream( AudioInputStream stream ) {
         try {
             AudioFormat audio  = stream.getFormat();
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             int  bufferSize = (int) audio.getSampleRate() * audio.getFrameSize();
             byte buffer[]   = new byte[ bufferSize ];
@@ -40,13 +40,13 @@ public class ButtonNoise{
             for (;;) {
                 int n = stream.read( buffer, 0, buffer.length );
                 if ( n > 0 ) {
-                    byteOut.write( buffer, 0, n );
+                    bos.write( buffer, 0, n );
                 } else {
                     break;
                 }
             }
 
-            return byteOut;
+            return bos;
         } catch ( Exception ex ) {
             System.out.println( ex ); System.exit( 1 ); return null;
         }
@@ -55,10 +55,10 @@ public class ButtonNoise{
     /*
      * This method will play the stream.
      */
-    static void playStream( AudioInputStream stream, ByteArrayOutputStream byteOut ) {
+    static void playStream( AudioInputStream stream, ByteArrayOutputStream bos ) {
         try {
             AudioFormat    audio   = stream.getFormat();
-            byte[]         ba   = byteOut.toByteArray();
+            byte[]         ba   = bos.toByteArray();
             DataLine.Info  info = new DataLine.Info( SourceDataLine.class, audio );
             SourceDataLine line = (SourceDataLine) AudioSystem.getLine( info );
 
@@ -74,6 +74,10 @@ public class ButtonNoise{
      * Main method to play sound.
      */
     public static void main( String[] argv ) {
+        startup();
+    }
+
+    static void startup(){
         AudioInputStream stream = setupStream( FILENAME );
         playStream( stream, readStream( stream ) );
     }
