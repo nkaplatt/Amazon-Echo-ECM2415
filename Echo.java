@@ -34,6 +34,8 @@ public class Echo extends JFrame {
                         setIcon(new ImageIcon("images/power_button_on.png")); // displays green power button for on
                         ButtonNoise.startup();
                         Echo.state = true;
+                        SoundInput.record(); // record some sound
+                        ButtonNoise.startup(SoundInput.FILENAME); // play back the recording
                     }
                 }
             });
