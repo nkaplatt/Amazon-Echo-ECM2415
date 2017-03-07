@@ -1,3 +1,10 @@
+/*
+* This class is for implementation of a wake word for recording sound
+* using two threads the aim is to have one thread listening for the
+* word that then passes to the 2nd thread to record and send speech
+* to the API for conversion.
+*/
+
 public class pauseThread implements Runnable{
 
   public static void main(String [] args)
@@ -5,7 +12,7 @@ public class pauseThread implements Runnable{
     (new Thread(new pauseThread())).start();
   }
 
-  public void run(){
+  public void run() {
     boolean pause = false;
     String temp = "Pause echo";                          //JUST FOR TESTING
       try{
@@ -27,7 +34,7 @@ public class pauseThread implements Runnable{
               }
           }
       }
-      catch (Exception e){
+      catch (Exception e) {
         System.out.println("You managed to break it. Good job!");
       }
   }

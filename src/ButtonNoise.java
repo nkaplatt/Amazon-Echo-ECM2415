@@ -7,11 +7,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+
+
 /**
  * Created by tilz on 19/02/2017.
  */
-public class ButtonNoise{
-    public final static String FILENAME = "C:\\Users\\Spencer\\Desktop\\repos\\Amazon-Echo-ECM2415\\Excess_code\\Obi-Wan - Hello there.wav";
+public class ButtonNoise {
+    private final static String FILENAME = "../sound/hellosound.wav";
+    private final static String byeSound = "../sound/byesound.wav";
 
     /*
      * This method sets up the stream for the sound file
@@ -55,30 +58,40 @@ public class ButtonNoise{
     /*
      * This method will play the stream.
      */
-    static void playStream( AudioInputStream stream, ByteArrayOutputStream bos ) {
+    static void playStream(AudioInputStream stream, ByteArrayOutputStream bos) {
         try {
-            AudioFormat    audio   = stream.getFormat();
-            byte[]         ba   = bos.toByteArray();
-            DataLine.Info  info = new DataLine.Info( SourceDataLine.class, audio );
+            AudioFormat audio = stream.getFormat();
+            byte[] ba = bos.toByteArray();
+            DataLine.Info info = new DataLine.Info( SourceDataLine.class, audio);
             SourceDataLine line = (SourceDataLine) AudioSystem.getLine( info );
 
-            line.open( audio );
+            line.open(audio);
             line.start();
-            line.write( ba, 0, ba.length );
-        } catch ( Exception ex ) {
-            System.out.println( ex ); System.exit( 1 );
+            line.write(ba, 0, ba.length);
+        } catch (Exception ex) {
+            System.out.println(ex); System.exit(1);
         }
     }
 
     /*
      * Main method to play sound.
      */
-    public static void main( String[] argv ) {
-        startup(FILENAME);
+    public static void main(String[] argv) {
+
     }
 
-    static void startup(String filename){
-        AudioInputStream stream = setupStream( filename );
-        playStream( stream, readStream( stream ) );
+    static void startup() {
+        AudioInputStream stream = setupStream( FILENAME );
+        playStream(stream, readStream(stream));
+    }
+
+    static void shutDown() {
+      AudioInputStream stream = setupStream( byeSound );
+      playStream(stream, readStream(stream));
+    }
+
+    static void playSound(String filename) {
+      AudioInputStream stream = setupStream( filename );
+      playStream(stream, readStream(stream));
     }
 }
