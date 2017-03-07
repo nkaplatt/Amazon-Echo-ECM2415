@@ -1,0 +1,16 @@
+
+
+
+app for taking text and returning an answer 
+
+wolfram ->
+APP NAME: amazonecho
+APPID: 2U72TH-A269EP8PTE
+
+
+
+app for taking speech to text/text to speech
+
+http://www.microsoft.com/cognitive-services/en-us
+Key 1:5885a505d6784d03a6ae1256acdb2e55 
+Key 2:9285aafce928425997d23885f8e6b100 
