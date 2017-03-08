@@ -36,7 +36,6 @@ public class Echo extends JFrame {
 
                     } else {
                         /* code to turn on echo */
-                        setContentPane(new ImageIcon("../images/Echo_on.png")); // File path for linux can be short hand
                         setIcon(new ImageIcon("../images/power_button_on.png")); // displays green power button for on
                         ButtonNoise.startup(); // play the start up sound
                         Echo.state = true;
