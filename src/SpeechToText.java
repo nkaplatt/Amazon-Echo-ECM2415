@@ -10,8 +10,6 @@ import java.util.UUID;
  */
 public class SpeechToText {
     final static String LANG  = "en-US";
-    final static String INPUT = "../sound/recording.wav";
-
     final static String KEY1 = "4b90f6fd41164a1cb90085c9380ae42b";
   /* final static String KEY2 = "9285aafce928425997d23885f8e6b100"; */
 
@@ -77,15 +75,22 @@ public class SpeechToText {
      * Convert speech to text.
      */
     public static void main( String[] argv ) {
-        final String token  = renewAccessToken( KEY1 );
-        final byte[] speech = readData( INPUT );
-        //
-        final String text = recognizeSpeech( token, speech ); // for Tillys part
-        //
 
-        boolean result = SearchText.findWakeWord(text); // Searches for wake word in the speach sent to API
-        System.out.println(result);
+    }
 
-        System.out.println( text );
+    /*
+    * Method that provides an entry point for the echo class to call and run This
+    * classes methods. Returns a string of null or a resulting question as
+    * wake word was heard/ found in text conversion.
+    */
+    public static String run_conversion(String key1, String INPUT) {
+      final String token  = renewAccessToken(KEY1);
+      final byte[] speech = readData(INPUT);
+
+      final String text = recognizeSpeech(token, speech); // this is to convert to text for later searching
+
+      // System.out.println(text); if we want to print all that is recorded
+      String result = SearchText.findWakeWord(text); // Searches for wake word in the speech sent to API
+      return (result);
     }
 }

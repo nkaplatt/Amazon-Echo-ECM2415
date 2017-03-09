@@ -14,15 +14,14 @@ import javax.sound.sampled.AudioInputStream;
 public class Echo extends JFrame {
     private static boolean state;
     private OnOffButton powerButton = new OnOffButton();
-    private static final String OUTPUT = "../sound/output.wav"; // Record sound to output file
-
+    private String[] filepaths = {"../sound/output.wav", "../sound/output2.wav", "../sound/output3.wav"};
+    private boolean setup_required = true;
 
     /*
     * Nested class creates the Button for interactively turning the
     * echo on and off.
     */
     private class OnOffButton extends JButton {
-        AudioInputStream stm = RecordSound.setupStream(); // Set up stream for recording
         OnOffButton() {
             setIcon(new ImageIcon("../images/power_button_off.png")); // initialises power as off
             setBorder(null);
@@ -33,6 +32,7 @@ public class Echo extends JFrame {
                         setIcon(new ImageIcon("../images/power_button_off.png")); // displays red power button for off
                         ButtonNoise.shutDown(); // play off sound
                         Echo.state = false;
+                        SoundThread.stop = true;
 
                     } else {
                         /* code to turn on echo */
@@ -40,17 +40,31 @@ public class Echo extends JFrame {
                         ButtonNoise.startup(); // play the start up sound
                         Echo.state = true;
 
-                        listen(stm);
 
+                        if (setup_required) {
+                          // Start 3 threads if they havent been set up yet
+                          // currently only working properly with 1 thread as they arent offset
+                          for (int i = 0; i < 1; i++) {
+                            SoundThread.create_thread(filepaths[i]);
+                          }
+                          setup_required = false; // will not try to re-setup threads when echo turned back on
+                        } else {
+                          System.out.println("this thread will restart");
+                        }
                     }
                 }
             });
         }
     }
 
+    /*
+    * Method create the echo interface and object - image and button are
+    * set up that later provides functionality of recording sound and
+    * responding with answers from wolfram alpha.
+    */
     public Echo() {
         setTitle("Echo");
-        setContentPane(new JLabel(new ImageIcon("../images/Echo_off.png"))); // File path for linux can be short hand
+        setContentPane(new JLabel(new ImageIcon("../images/Echo_off.png"))); // displays the echo in the off state originally
         setLayout(null);
 
         /* code for creating bounds for button */
@@ -60,12 +74,13 @@ public class Echo extends JFrame {
         add(powerButton);
     }
 
-    public static void listen(AudioInputStream stm) {
-      System.out.println("about to record");
-      RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm));
-
-      System.out.println("finished recording");
-      ButtonNoise.playSound(OUTPUT); // play back the recording
+    /*
+    * Method calls RecordSound class to start a recording to an output
+    * file for later use with the API toolkit.
+    */
+    public static void listen(AudioInputStream stm, String OUTPUT) {
+      System.out.println("Echo will now record for 10 seconds to output.wav");
+      RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm)); // records sound to file path
     }
 
     public static void main(String[] args) {

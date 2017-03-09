@@ -13,7 +13,6 @@ import javax.sound.sampled.TargetDataLine;
  * Record sound.
  */
 class RecordSound {
-    private static final String FILENAME = "../sound/output.wav";
     private static final int TIMER = 10; /* secs */
     private static final int SAMPLE_RATE = 16000; /* MHz  */
     private static final int SAMPLE_SIZE = 16;    /* bits */
@@ -91,15 +90,19 @@ class RecordSound {
         }
     }
 
+    public void record_this(String FILENAME) {
+      AudioInputStream stm = setupStream();
+      recordSound( FILENAME, readStream( stm ) );
+      //
+      // try running converttotext using file made from recordsound
+      // cant remember how to run it
+      SpeechToText converttotext = new SpeechToText();
+    }
+
     /*
      * Record sound.
      */
     public static void main( String[] argv ) {
-        AudioInputStream stm = setupStream();
-        recordSound( FILENAME, readStream( stm ) );
-        //
-        // try running converttotext using file made from recordsound
-        // cant remember how to run it
-        SpeechToText converttotext = new SpeechToText();
+
     }
 }
