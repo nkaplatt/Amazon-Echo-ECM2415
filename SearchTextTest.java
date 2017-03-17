@@ -2,15 +2,13 @@ import junit.framework.TestCase;
 
 /**
  * Created by tilz on 06/03/2017.
- *
- * Testing tht the SearchText class performs as expected.
  */
 public class SearchTextTest extends TestCase {
     public String textTrue;
     public String textFalse;
     public void setUp() throws Exception {
         super.setUp();
-        textTrue = "Alexa what is the melting point of silver";
+        textTrue = "Echo what is the melting point of silver";
         textFalse = "Hi Andrew how are you?";
 
     }
@@ -21,8 +19,8 @@ public class SearchTextTest extends TestCase {
     }
 
     public void testFindWakeWord() throws Exception {
-        assertEquals(true, SearchText.findWakeWord(textTrue));
-        assertEquals(false, SearchText.findWakeWord(textFalse));
+        assertEquals(" what is the melting point of silver", SearchText.findWakeWord(textTrue));
+        assertEquals( null, SearchText.findWakeWord(textFalse));
         tearDown();
     }
 
