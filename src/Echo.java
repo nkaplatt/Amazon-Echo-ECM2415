@@ -14,8 +14,7 @@ import javax.sound.sampled.AudioInputStream;
 public class Echo extends JFrame {
     private static boolean state;
     private OnOffButton powerButton = new OnOffButton();
-    private String[] filepaths = {"../sound/output.wav", "../sound/output2.wav", "../sound/output3.wav"};
-    private boolean setup_required = true;
+    private static String[] filepaths = {"../sound/waitforecho.wav","../sound/output.wav", "../sound/output2.wav"};
 
     /*
     * Nested class creates the Button for interactively turning the
@@ -32,25 +31,19 @@ public class Echo extends JFrame {
                         setIcon(new ImageIcon("../images/power_button_off.png")); // displays red power button for off
                         ButtonNoise.shutDown(); // play off sound
                         Echo.state = false;
-                        SoundThread.stop = true;
+                        WakeWordThread.pause = true;
+                        SoundThread.pause = true;
 
                     } else {
                         /* code to turn on echo */
                         setIcon(new ImageIcon("../images/power_button_on.png")); // displays green power button for on
                         ButtonNoise.startup(); // play the start up sound
                         Echo.state = true;
-
-
-                        if (setup_required) {
-                          // Start 3 threads if they havent been set up yet
-                          // currently only working properly with 1 thread as they arent offset
-                          for (int i = 0; i < 1; i++) {
-                            SoundThread.create_thread(filepaths[i]);
-                          }
-                          setup_required = false; // will not try to re-setup threads when echo turned back on
-                        } else {
-                          System.out.println("this thread will restart");
+                        WakeWordThread.pause = false;
+                        synchronized(WakeWordThread.lock){
+                          WakeWordThread.lock.notify();
                         }
+                        SoundThread.pause = true;
                     }
                 }
             });
@@ -79,8 +72,9 @@ public class Echo extends JFrame {
     * file for later use with the API toolkit.
     */
     public static void listen(AudioInputStream stm, String OUTPUT) {
-      System.out.println("Echo will now record for 10 seconds to output.wav");
+      System.out.println(OUTPUT + " will now record for 10 seconds");
       RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm)); // records sound to file path
+        System.out.println(OUTPUT + " has finished recording");
     }
 
     public static void main(String[] args) {
@@ -90,5 +84,15 @@ public class Echo extends JFrame {
         frame.setResizable(true);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        AudioInputStream stream_tmp = RecordSound.setupStream(); //Setup audio stream
+        // Start thread listening for wake word
+        WakeWordThread.create_wakeword_thread(filepaths[0],stream_tmp);
+        System.out.println("Thread " + filepaths[0] + " created");
+        // Start threads listening for question
+        SoundThread.create_thread(filepaths[1],stream_tmp);
+        System.out.println("Thread " + filepaths[1] + " created");
+        SoundThread.create_thread(filepaths[2],stream_tmp);
+        System.out.println("Thread " + filepaths[2] + " created");
     }
 }

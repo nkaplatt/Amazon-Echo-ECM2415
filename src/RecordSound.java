@@ -90,15 +90,6 @@ class RecordSound {
         }
     }
 
-    public void record_this(String FILENAME) {
-      AudioInputStream stm = setupStream();
-      recordSound( FILENAME, readStream( stm ) );
-      //
-      // try running converttotext using file made from recordsound
-      // cant remember how to run it
-      SpeechToText converttotext = new SpeechToText();
-    }
-
     /*
      * Record sound.
      */

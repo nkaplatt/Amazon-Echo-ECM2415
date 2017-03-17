@@ -90,7 +90,12 @@ public class SpeechToText {
       final String text = recognizeSpeech(token, speech); // this is to convert to text for later searching
 
       // System.out.println(text); if we want to print all that is recorded
-      String result = SearchText.findWakeWord(text); // Searches for wake word in the speech sent to API
-      return (result);
+      if(!WakeWordThread.pause){
+        String result = SearchText.findWakeWord(text); // Searches for wake word in the speech sent to API
+        return result;
+      } else {
+        String result = SearchText.findQuestion(text); // Searches for wake word in the speech sent to API
+        return result;
+      }
     }
 }

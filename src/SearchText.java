@@ -19,20 +19,22 @@ public class SearchText{
      */
     static String findWakeWord (String text ){
         String WakeWord = "Echo";
-        String question = null;
-        boolean found = Arrays.asList(text.split(" ")).contains(WakeWord);
-        if(found) {
-
-            //enter text after wakeword
-            String [] parts = text.split(WakeWord);
-            question = parts[1];
-            System.out.println(question);
+        if(Arrays.asList(text.split(" ")).contains(WakeWord)) {
+            return "Echo";
         } else {
-            //keep listening
+            return null;
         }
-        return question;
     }
 
+    static String findQuestion (String text ){
+        String question = null;
+        question = text;
+        //if() {                                            -----------If words are spoken
+        //    String [] parts = text.split();               -----------Split the words into a question
+        //    question = parts[1];                          -----------Override question = null with the actual words spoken
+        //}
+        return question;
+    }
 
     public static void main (String[] argv){
         findWakeWord("Echo what is the melting point of silver");
