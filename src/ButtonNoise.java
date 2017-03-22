@@ -12,11 +12,12 @@ import javax.sound.sampled.SourceDataLine;
 /**
  * Created by tilz on 19/02/2017.
  */
-public class ButtonNoise {
+public class ButtonNoise implements Runnable{
     private final static String FILENAME = "../sound/hellosound.wav";
     private final static String byeSound = "../sound/byesound.wav";
     private final static String listeningSound = "../sound/listening.wav";
     private final static String echoheard = "../sound/echoheard.wav";
+    private static volatile boolean turnOn = true;
 
     /*
      * This method sets up the stream for the sound file
@@ -82,14 +83,21 @@ public class ButtonNoise {
 
     }
 
-    static void startup() {
-        AudioInputStream stream = setupStream( FILENAME );
-        playStream(stream, readStream(stream));
-    }
-
-    static void shutDown() {
-      AudioInputStream stream = setupStream( byeSound );
-      playStream(stream, readStream(stream));
+    public void run() {
+      try{
+        if (turnOn){
+          turnOn = false;
+          AudioInputStream stream = setupStream( FILENAME );
+          playStream(stream, readStream(stream));
+          readyForWakeWord();
+        } else {
+          turnOn = true;
+          AudioInputStream stream = setupStream( byeSound );
+          playStream(stream, readStream(stream));
+        }
+      } catch (Exception ex){
+        System.out.println("Playing noise failed");
+      }
     }
 
     static void readyForWakeWord(){

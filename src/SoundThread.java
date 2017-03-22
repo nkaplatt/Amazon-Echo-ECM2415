@@ -17,6 +17,7 @@ public class SoundThread implements Runnable {
   private static String answer = "../sound/answer.wav";
   private static String beforeAnswer = "../sound/beforeanswer.wav";
   private static int timer = 10;
+  public static volatile boolean finishedRunning = true;
 
   public static void main(String [] args) {
 
@@ -32,10 +33,14 @@ public class SoundThread implements Runnable {
       try {
           synchronized(lock){
             while (running) {
-              if (pause){
+              if (pause || Echo.isClicked){
+                Echo.isClicked = false;
+                finishedRunning = true;
                 lock.wait();
+                finishedRunning = false;
               }
               if (!pause){
+                System.out.println("Not Finished1");
                 Echo.listen(stream, FILENAME, timer); // Call the record function from echo for the question
                 String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the question speech to text
 

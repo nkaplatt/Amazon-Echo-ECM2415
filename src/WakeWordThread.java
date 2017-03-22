@@ -13,6 +13,7 @@ public class WakeWordThread implements Runnable {
   public static volatile boolean pause = true; // Checks if wakeword is spoken
   public static Object lock = new Object();
   private static int timer = 5;
+  public static volatile boolean finishedRunning = true;
 
   public static void main(String [] args) {
 
@@ -26,9 +27,11 @@ public class WakeWordThread implements Runnable {
       try {
         synchronized(lock){
             while (running) {
-              if (pause){
+              if (pause || Echo.isClicked){
+                finishedRunning = true;
+                Echo.isClicked = false;
                 lock.wait();
-                ButtonNoise.readyForWakeWord();
+                finishedRunning = false;
               }
               Echo.listen(stream, FILENAME, timer); // Call the record function from echo
               String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the wake word search
