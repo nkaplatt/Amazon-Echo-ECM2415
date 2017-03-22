@@ -13,7 +13,7 @@ import javax.swing.Timer;
 
 public class Echo extends JFrame {
     private static boolean state;
-    private OnOffButton powerButton = new OnOffButton();
+    private static OnOffButton powerButton = new OnOffButton();
     private static String[] filepaths = {"../sound/waitforecho.wav","../sound/output.wav", "../sound/output2.wav"};
     private static String[] echoimagepaths = {"../images/Echo_off.png","../images/Echo.png","../images/Echo_answer.png"};
     private static JFrame frame = new Echo(); // Creates the frame for the echo image to reside
@@ -23,7 +23,7 @@ public class Echo extends JFrame {
     * Nested class creates the Button for interactively turning the
     * echo on and off.
     */
-    private class OnOffButton extends JButton implements Runnable {
+    private static class OnOffButton extends JButton implements Runnable {
         OnOffButton() {
             setBorder(null);
             addMouseListener(new MouseAdapter() {
@@ -118,6 +118,18 @@ public class Echo extends JFrame {
         // Start threads listening for question
         SoundThread.create_thread(filepaths[1],stream_tmp);
         SoundThread.create_thread(filepaths[2],stream_tmp);
+    }
+
+    public static void toggleEcho(){
+      if (SoundThread.pause){
+        frame.setContentPane(new JLabel(new ImageIcon(echoimagepaths[1])));
+        frame.getContentPane().add(powerButton);
+        frame.setVisible(true);
+      } else {
+        frame.setContentPane(new JLabel(new ImageIcon(echoimagepaths[2])));
+        frame.getContentPane().add(powerButton);
+        frame.setVisible(true);
+      }
     }
 
 }

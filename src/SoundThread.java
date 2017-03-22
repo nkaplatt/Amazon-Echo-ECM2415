@@ -43,6 +43,7 @@ public class SoundThread implements Runnable {
               if (!pause){
 
                 Echo.listen(stream, FILENAME, timer); // Call the record function from echo for the question
+                Echo.toggleEcho();
                 String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the question speech to text
 
                 if (result != null){ // If question is spoken else go back to listening threads
@@ -66,6 +67,7 @@ public class SoundThread implements Runnable {
                   synchronized(WakeWordThread.lock) {
                     if (!WakeWordThread.pause){
                       WakeWordThread.lock.notify();
+                      Echo.toggleEcho();
                     }
                   }
                 }
