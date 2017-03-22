@@ -10,8 +10,9 @@ public class WakeWordThread implements Runnable {
   final String FILENAME; // file that belongs to the thread
   final AudioInputStream stream; // stream that belongs to thread
   final static String KEY1 = "42de859ace014243b12755d3287d102e"; // API key
-  public static boolean pause = true; // Checks if wakeword is spoken
+  public static volatile boolean pause = true; // Checks if wakeword is spoken
   public static Object lock = new Object();
+  private static int timer = 5;
 
   public static void main(String [] args) {
 
@@ -29,7 +30,7 @@ public class WakeWordThread implements Runnable {
                 lock.wait();
                 ButtonNoise.readyForWakeWord();
               }
-              Echo.listen(stream, FILENAME); // Call the record function from echo
+              Echo.listen(stream, FILENAME, timer); // Call the record function from echo
               String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the wake word search
               if (result != null) { // If the result brings back something because keyword was heard
                 ButtonNoise.heardEcho(); // heard the wake word

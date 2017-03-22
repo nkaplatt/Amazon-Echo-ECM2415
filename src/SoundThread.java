@@ -16,6 +16,7 @@ public class SoundThread implements Runnable {
   public static Object lock = new Object();
   private static String answer = "../sound/answer.wav";
   private static String beforeAnswer = "../sound/beforeanswer.wav";
+  private static int timer = 10;
 
   public static void main(String [] args) {
 
@@ -35,7 +36,7 @@ public class SoundThread implements Runnable {
                 lock.wait();
               }
               if (!pause){
-                Echo.listen(stream, FILENAME); // Call the record function from echo for the question
+                Echo.listen(stream, FILENAME, timer); // Call the record function from echo for the question
                 String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the question speech to text
 
                 if (result != null){ // If question is spoken else go back to listening threads
@@ -57,7 +58,9 @@ public class SoundThread implements Runnable {
                   pause = true;
                   WakeWordThread.pause = false;
                   synchronized(WakeWordThread.lock) {
-                    WakeWordThread.lock.notify();
+                    if (!WakeWordThread.pause){
+                      WakeWordThread.lock.notify();
+                    }
                   }
                 }
               }

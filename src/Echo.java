@@ -71,9 +71,9 @@ public class Echo extends JFrame {
     * Method calls RecordSound class to start a recording to an output
     * file for later use with the API toolkit.
     */
-    public static void listen(AudioInputStream stm, String OUTPUT) {
-        System.out.println("Echo will now record for 10 seconds");
-        RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm)); // records sound to file path
+    public static void listen(AudioInputStream stm, String OUTPUT, int timer) {
+        System.out.println("Echo will now record for " + timer + " seconds");
+        RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm, timer)); // records sound to file path
         System.out.println("Echo has finished recording");
     }
 

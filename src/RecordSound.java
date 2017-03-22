@@ -13,7 +13,6 @@ import javax.sound.sampled.TargetDataLine;
  * Record sound.
  */
 class RecordSound {
-    private static final int TIMER = 10; /* secs */
     private static final int SAMPLE_RATE = 16000; /* MHz  */
     private static final int SAMPLE_SIZE = 16;    /* bits */
     private static final int SAMPLE_CHANNELS = 1;     /* mono */
@@ -46,14 +45,14 @@ class RecordSound {
     /*
      * Read stream.
      */
-    static ByteArrayOutputStream readStream( AudioInputStream stm ) {
+    static ByteArrayOutputStream readStream( AudioInputStream stm, int timer ) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             int  bufferSize = SAMPLE_RATE * stm.getFormat().getFrameSize();
             byte buffer[]   = new byte[ bufferSize ];
 
-            for ( int counter = TIMER; counter > 0; counter-- ) {
+            for ( int counter = timer; counter > 0; counter-- ) {
                 int n = stm.read( buffer, 0, buffer.length );
                 if ( n > 0 ) {
                     bos.write( buffer, 0, n );
