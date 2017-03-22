@@ -32,6 +32,7 @@ public class WakeWordThread implements Runnable {
                 Echo.isClicked = false;
                 lock.wait();
                 finishedRunning = false;
+                Echo.isClicked = false;
               }
               Echo.listen(stream, FILENAME, timer); // Call the record function from echo
               String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the wake word search

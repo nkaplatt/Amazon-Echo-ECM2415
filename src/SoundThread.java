@@ -38,9 +38,10 @@ public class SoundThread implements Runnable {
                 finishedRunning = true;
                 lock.wait();
                 finishedRunning = false;
+                Echo.isClicked = false;
               }
               if (!pause){
-                System.out.println("Not Finished1");
+
                 Echo.listen(stream, FILENAME, timer); // Call the record function from echo for the question
                 String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the question speech to text
 

@@ -15,7 +15,7 @@ public class Echo extends JFrame {
     private static boolean state;
     private OnOffButton powerButton = new OnOffButton();
     private static String[] filepaths = {"../sound/waitforecho.wav","../sound/output.wav", "../sound/output2.wav"};
-    private static String[] echoimagepaths = {"../images/Echo_off.png","../images/Echo.png"};
+    private static String[] echoimagepaths = {"../images/Echo_off.png","../images/Echo.png","../images/Echo_answer.png"};
     private static JFrame frame = new Echo(); // Creates the frame for the echo image to reside
     public static volatile boolean isClicked = false;
 
@@ -63,12 +63,14 @@ public class Echo extends JFrame {
         public void run(){
           try{
               if(!Echo.state) {
-                System.out.println("Test 1");
+                frame.setContentPane(new JLabel(new ImageIcon(echoimagepaths[0])));
+                frame.getContentPane().add(powerButton);
+                frame.setVisible(true);
                 setIcon(new ImageIcon("../images/power_button_off.png")); // displays red power button for off
               } else {
-                System.out.println("Test 2");
-                //frame.setContentPane(new JLabel(new ImageIcon(echoimagepaths[1])));
-                //frame.remove(powerButton);
+                frame.setContentPane(new JLabel(new ImageIcon(echoimagepaths[1])));
+                frame.getContentPane().add(powerButton);
+                frame.setVisible(true);
                 setIcon(new ImageIcon("../images/power_button_on.png")); // displays green power button for on
               }
           } catch (Exception ex) {
