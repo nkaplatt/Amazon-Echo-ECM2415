@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
  * David Wakeling, 2017.
  */
 public class HttpConnect {
-  final static int TIMEOUT  = 5000; /* ms  */
+  final static int TIMEOUT  = 50000; /* ms  */
   final static int BUFFSIZE = 4096; /* 4KB */
 
   public static byte[] httpConnect
@@ -42,7 +42,7 @@ public class HttpConnect {
       DataOutputStream dos = new DataOutputStream( conn.getOutputStream() );
       dos.write( body );
       dos.flush();
-      dos.close(); 
+      dos.close();
 
       /*
        * Receive data.
@@ -55,7 +55,7 @@ public class HttpConnect {
         int n = dis.read( buffer );
         if ( n > 0 ) {
           bos.write( buffer, 0, n );
-        } else { 
+        } else {
           break;
         }
       }

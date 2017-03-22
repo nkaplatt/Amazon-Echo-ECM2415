@@ -14,6 +14,8 @@ public class SoundThread implements Runnable {
   final static String KEY1 = "4b90f6fd41164a1cb90085c9380ae42b"; // API key
   public static volatile boolean pause = true; // When the off button is pressed set this to true to pause threads
   public static Object lock = new Object();
+  private static String answer = "../sound/answer.wav";
+  private static String beforeAnswer = "../sound/beforeanswer.wav";
 
   public static void main(String [] args) {
 
@@ -30,22 +32,31 @@ public class SoundThread implements Runnable {
           synchronized(lock){
             while (running) {
               if (pause){
-                System.out.println(FILENAME + " is pausing");
                 lock.wait();
               }
               if (!pause){
-                System.out.println(FILENAME + " is waiting for a question");
-                Echo.listen(stream, FILENAME); // Call the record function from echo
-                String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the wake word search
+                Echo.listen(stream, FILENAME); // Call the record function from echo for the question
+                String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the question speech to text
 
-                if (result != null){ // If question is spoken
-                  System.out.println("The question recorded is as follows:");
-                  System.out.println(result); // print question
-                } else {
-                  System.out.println("No question spoken. Begin waiting for wake word.");
+                if (result != null){ // If question is spoken else go back to listening threads
+                  String response = Computational.solve(result);
+                  System.out.println("Full json response " + response);
+
+                  // Strip anwser from wolfram json here
+                  response = JsonParser.stripAnswer(response);
+                  System.out.println("striped response " + response);
+
+                  // convert text to speech to speak answers
+                  TextToSpeech.runConversion(response);
+                  ButtonNoise.playSound(beforeAnswer); // The answer is
+                  ButtonNoise.playSound(answer);
+
+                  Thread.sleep(200);
+
+                  // close thread - restart listen for wake word threads.
                   pause = true;
                   WakeWordThread.pause = false;
-                  synchronized(WakeWordThread.lock){
+                  synchronized(WakeWordThread.lock) {
                     WakeWordThread.lock.notify();
                   }
                 }

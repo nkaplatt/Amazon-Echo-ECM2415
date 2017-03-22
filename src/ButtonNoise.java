@@ -15,6 +15,8 @@ import javax.sound.sampled.SourceDataLine;
 public class ButtonNoise {
     private final static String FILENAME = "../sound/hellosound.wav";
     private final static String byeSound = "../sound/byesound.wav";
+    private final static String listeningSound = "../sound/listening.wav";
+    private final static String echoheard = "../sound/echoheard.wav";
 
     /*
      * This method sets up the stream for the sound file
@@ -87,6 +89,16 @@ public class ButtonNoise {
 
     static void shutDown() {
       AudioInputStream stream = setupStream( byeSound );
+      playStream(stream, readStream(stream));
+    }
+
+    static void readyForWakeWord(){
+        AudioInputStream stream = setupStream (listeningSound);
+        playStream(stream, readStream(stream));
+    }
+
+    static void heardEcho() {
+      AudioInputStream stream = setupStream (echoheard);
       playStream(stream, readStream(stream));
     }
 

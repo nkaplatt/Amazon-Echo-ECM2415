@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
 import java.util.UUID;
+
 /*
  * Speech to text conversion using Microsoft Cognitive Services.
  *
@@ -10,7 +11,7 @@ import java.util.UUID;
  */
 public class SpeechToText {
     final static String LANG  = "en-US";
-    final static String KEY1 = "4b90f6fd41164a1cb90085c9380ae42b";
+    final static String KEY1 = "42de859ace014243b12755d3287d102e";
   /* final static String KEY2 = "9285aafce928425997d23885f8e6b100"; */
 
     /*
@@ -89,12 +90,11 @@ public class SpeechToText {
 
       final String text = recognizeSpeech(token, speech); // this is to convert to text for later searching
 
-      // System.out.println(text); if we want to print all that is recorded
       if(!WakeWordThread.pause){
         String result = SearchText.findWakeWord(text); // Searches for wake word in the speech sent to API
         return result;
       } else {
-        String result = SearchText.findQuestion(text); // Searches for wake word in the speech sent to API
+        String result = JsonParser.start(text); // Strips the microsoft JSON text for the question
         return result;
       }
     }

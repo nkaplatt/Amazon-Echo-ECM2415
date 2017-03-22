@@ -9,7 +9,7 @@ import javax.sound.sampled.AudioInputStream;
 public class WakeWordThread implements Runnable {
   final String FILENAME; // file that belongs to the thread
   final AudioInputStream stream; // stream that belongs to thread
-  final static String KEY1 = "4b90f6fd41164a1cb90085c9380ae42b"; // API key
+  final static String KEY1 = "42de859ace014243b12755d3287d102e"; // API key
   public static boolean pause = true; // Checks if wakeword is spoken
   public static Object lock = new Object();
 
@@ -26,22 +26,20 @@ public class WakeWordThread implements Runnable {
         synchronized(lock){
             while (running) {
               if (pause){
-                System.out.println(FILENAME + " is pausing");
                 lock.wait();
-                System.out.println(FILENAME + " is unpausing");
+                ButtonNoise.readyForWakeWord();
               }
               Echo.listen(stream, FILENAME); // Call the record function from echo
               String result = SpeechToText.run_conversion(KEY1, FILENAME); // runs the conversion for the wake word search
-
               if (result != null) { // If the result brings back something because keyword was heard
-                System.out.println("Wake word heard");
-                pause = true;
+                ButtonNoise.heardEcho(); // heard the wake word
+                pause = true; // pause threads that listen for wake word as moving to question thread
                 SoundThread.pause = false;
                 synchronized(SoundThread.lock){
                   SoundThread.lock.notifyAll();
                 }
               } else {
-                System.out.println("Waiting for the word \"Echo\"");
+                  System.out.println("Waiting for the wake word \"Echo\"");
               }
             }
           }

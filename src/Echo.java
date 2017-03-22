@@ -72,9 +72,9 @@ public class Echo extends JFrame {
     * file for later use with the API toolkit.
     */
     public static void listen(AudioInputStream stm, String OUTPUT) {
-      System.out.println(OUTPUT + " will now record for 10 seconds");
-      RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm)); // records sound to file path
-        System.out.println(OUTPUT + " has finished recording");
+        System.out.println("Echo will now record for 10 seconds");
+        RecordSound.recordSound(OUTPUT, RecordSound.readStream(stm)); // records sound to file path
+        System.out.println("Echo has finished recording");
     }
 
     public static void main(String[] args) {
@@ -88,11 +88,8 @@ public class Echo extends JFrame {
         AudioInputStream stream_tmp = RecordSound.setupStream(); //Setup audio stream
         // Start thread listening for wake word
         WakeWordThread.create_wakeword_thread(filepaths[0],stream_tmp);
-        System.out.println("Thread " + filepaths[0] + " created");
         // Start threads listening for question
         SoundThread.create_thread(filepaths[1],stream_tmp);
-        System.out.println("Thread " + filepaths[1] + " created");
         SoundThread.create_thread(filepaths[2],stream_tmp);
-        System.out.println("Thread " + filepaths[2] + " created");
     }
 }
